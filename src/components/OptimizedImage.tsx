@@ -32,7 +32,7 @@ export default function OptimizedImage({
     const isR2 = src?.includes('r2.dev')
 
     // Fallback image for errors
-    const fallbackSrc = '/uploads/1759845994308-d20obwggsn.jpg'
+    const fallbackSrc = '/uploads/placeholder_agent.png'
 
     const imageSrc = error ? fallbackSrc : (src || fallbackSrc)
 

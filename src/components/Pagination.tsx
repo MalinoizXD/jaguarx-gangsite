@@ -26,42 +26,35 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
   }
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-8">
-      <motion.button
+    <div className="flex justify-center items-center gap-1">
+      <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="p-2 rounded-lg bg-gray-800 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        className="p-2 border border-white/10 text-white disabled:opacity-20 disabled:cursor-not-allowed hover:bg-white/10 transition-colors"
       >
-        <ChevronLeft size={20} />
-      </motion.button>
+        <ChevronLeft size={16} />
+      </button>
 
       {pages.map((page) => (
-        <motion.button
+        <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`px-4 py-2 rounded-lg transition-colors ${
-            page === currentPage
-              ? 'bg-red-600 text-white'
-              : 'bg-gray-800 text-white hover:bg-gray-700'
-          }`}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          className={`w-8 h-8 flex items-center justify-center text-sm font-bold border transition-colors ${page === currentPage
+              ? 'bg-white text-black border-white'
+              : 'bg-transparent text-white border-white/10 hover:border-white/50'
+            }`}
         >
           {page}
-        </motion.button>
+        </button>
       ))}
 
-      <motion.button
+      <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="p-2 rounded-lg bg-gray-800 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        className="p-2 border border-white/10 text-white disabled:opacity-20 disabled:cursor-not-allowed hover:bg-white/10 transition-colors"
       >
-        <ChevronRight size={20} />
-      </motion.button>
+        <ChevronRight size={16} />
+      </button>
     </div>
   )
 }
