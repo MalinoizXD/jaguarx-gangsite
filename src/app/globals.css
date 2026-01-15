@@ -8,7 +8,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-chakra-petch);
+  --font-sans: var(--font-asylum);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,7 +21,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-chakra-petch), Arial, Helvetica, sans-serif;
+  font-family: var(--font-asylum), Arial, Helvetica, sans-serif;
 }
 
 @keyframes founder-glow {

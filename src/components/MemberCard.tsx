@@ -26,73 +26,63 @@ export default function MemberCard({ member }: MemberCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-      className="group relative p-2"
+      transition={{ duration: 0.3 }}
+      className="group relative"
     >
-      {/* Card Container with Angled Corners */}
-      <div
-        className="relative w-full aspect-[3/4] bg-neutral-900 overflow-hidden transition-all duration-300 group-hover:-translate-y-1"
-        style={{
-          clipPath: 'polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%)'
-        }}
-      >
-        {/* Image */}
-        <div className="absolute inset-0">
-          <OptimizedImage
-            src={imageUrl}
-            alt={`${member.firstname} ${member.lastname}`}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0 grayscale"
-          />
-          {/* Dark Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+      <div className="relative w-full bg-neutral-900/80 backdrop-blur-sm border border-white/10 rounded-2xl p-4 flex items-center gap-4 hover:bg-neutral-800/80 transition-all duration-300 hover:border-white/30 hover:shadow-lg hover:shadow-white/5">
+
+        {/* Avatar Section */}
+        <div className="relative shrink-0">
+          <div className={`w-16 h-16 rounded-full overflow-hidden border-2 ${isSpecialRole ? 'border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'border-neutral-700 group-hover:border-white/50'} transition-colors duration-300`}>
+            <OptimizedImage
+              src={imageUrl}
+              alt={`${member.firstname} ${member.lastname}`}
+              fill
+              className="object-cover"
+            />
+          </div>
+          {/* Online/Status Indicator (Optional visual detail) */}
+          <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-neutral-900 rounded-full" />
         </div>
 
-        {/* Tech Overlays */}
-        <div className="absolute inset-0 pointer-events-none border border-white/10" />
-        <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white/30" />
-        <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white/30" />
+        {/* Info Section */}
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-col">
+            {/* Role Badge if special */}
+            {member.role && (
+              <span className={`text-[10px] font-bold uppercase tracking-wider mb-0.5 ${isSpecialRole ? 'text-red-400' : 'text-neutral-500'}`}>
+                {member.role}
+              </span>
+            )}
 
-        {/* Role Badge (Top Left) */}
-        {member.role && (
-          <div className="absolute top-3 left-3 flex items-center gap-2">
-            <div className={`h-1 w-8 ${isSpecialRole ? 'bg-red-500' : 'bg-neutral-500'}`} />
-            <span className="text-[10px] font-bold tracking-widest uppercase text-white/80">
-              {member.role}
-            </span>
-          </div>
-        )}
+            {/* Name */}
+            <h3 className="text-lg font-bold text-white truncate leading-tight group-hover:text-red-500 transition-colors duration-300">
+              {member.firstname} {member.lastname}
+            </h3>
 
-        {/* Info Section (Bottom) */}
-        <div className="absolute bottom-0 left-0 w-full p-4 pb-8">
-          <h3 className="text-xl font-bold text-white uppercase tracking-tighter leading-none mb-1">
-            {member.firstname}
-          </h3>
-          <h3 className="text-lg font-bold text-neutral-500 uppercase tracking-tighter leading-none">
-            {member.lastname}
-          </h3>
-
-          {/* Social Link (Hidden by default, visible on hover) */}
-          {member.sociallinks?.facebook && (
-            <div className="mt-3 overflow-hidden h-0 group-hover:h-auto transition-all duration-300">
+            {/* Facebook Link */}
+            {member.sociallinks?.facebook ? (
               <a
                 href={member.sociallinks.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-xs text-white/70 hover:text-white transition-colors"
+                className="text-xs text-blue-400 hover:text-blue-300 transition-colors mt-1 flex items-center gap-1 font-medium"
               >
-                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
-                FACEBOOK PROFILE
+                Facebook
               </a>
-            </div>
-          )}
+            ) : (
+              <span className="text-xs text-neutral-600 mt-1 font-medium">No Contact</span>
+            )}
+          </div>
         </div>
 
-        {/* Hover Glitch Effect Line */}
-        <div className="absolute bottom-0 right-0 w-full h-1 bg-white/0 group-hover:bg-white/20 transition-colors duration-300" />
+        {/* Decorative Corner Accent */}
+        <div className="absolute top-0 right-0 w-8 h-8 overflow-hidden rounded-tr-2xl">
+          <div className="absolute top-0 right-0 w-4 h-4 bg-white/5 rotate-45 transform origin-bottom-left" />
+        </div>
       </div>
     </motion.div>
   )

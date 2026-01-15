@@ -5,7 +5,7 @@ import "./globals.css";
 import AutoPlayMusic from "../components/AutoPlayMusic";
 
 const asylumFont = localFont({
-  src: "./fonts/VL_LHFAsylum_Small.otf",
+  src: "./fonts/QGYvz_MVcBeNP4NJtEtq.woff2",
   variable: "--font-asylum",
   display: "swap",
 });
