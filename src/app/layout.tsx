@@ -17,14 +17,14 @@ const chakraPetch = Chakra_Petch({
 });
 
 export const metadata: Metadata = {
-  title: "JAGUARX - Born of Estelle",
-  description: "JAGUARX Gang - Born of Estelle. สนใจเข้าตระกูลทักแชทเพจมาได้เลย!",
+  title: "JAGUARX ONLY",
+  description: "JAGUARX",
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "JAGUARX - Born of Estelle",
-    description: "JAGUARX Gang - Born of Estelle. สนใจเข้าตระกูลทักแชทเพจมาได้เลย!",
+    title: "JAGUARX ONLY",
+    description: "JAGUARX",
     url: "https://www.jaguarx.xyz",
     siteName: "JAGUARX",
     images: [
@@ -40,8 +40,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "JAGUARX - Born of Estelle",
-    description: "JAGUARX Gang - Born of Estelle. สนใจเข้าตระกูลทักแชทเพจมาได้เลย!",
+    title: "JAGUARX ONLY",
+    description: "JAGUARX",
     images: ["/uploads/1760010475208-0une9deywda1ye.png"],
   },
   metadataBase: new URL("https://www.jaguarx.xyz"),
