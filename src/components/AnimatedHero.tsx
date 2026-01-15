@@ -2,6 +2,16 @@
 
 import { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
+
+const Logo3D = dynamic(() => import('./Logo3D'), {
+    ssr: false,
+    loading: () => (
+        <div className="w-full h-[300px] md:h-[400px] flex items-center justify-center">
+            <div className="w-16 h-16 border-4 border-white/10 border-t-white rounded-full animate-spin" />
+        </div>
+    )
+})
 
 export default function AnimatedHero() {
     const [isLoaded, setIsLoaded] = useState(false)
@@ -99,6 +109,11 @@ export default function AnimatedHero() {
                 {/* Main hero */}
                 <div className="relative flex flex-col items-center z-10">
 
+                    {/* 3D Spinning Logo */}
+                    <div className="w-full max-w-2xl mx-auto">
+                        <Logo3D />
+                    </div>
+
 
                     {/* Brand name with reveal animation */}
                     <div className="relative mt-12">
@@ -169,6 +184,13 @@ export default function AnimatedHero() {
                                 MEMBERS
                             </span>
                         </a>
+                    </div>
+
+                    {/* Credit */}
+                    <div className={`mt-16 text-center transition-all duration-1000 delay-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                        <p className="text-neutral-600 text-xs uppercase tracking-widest">
+                            System Design by <a href="https://www.facebook.com/mali.temps/" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">Mali Cloud</a>
+                        </p>
                     </div>
                 </div>
             </div>

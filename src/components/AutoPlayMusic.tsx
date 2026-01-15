@@ -15,9 +15,9 @@ interface AutoPlayMusicProps {
 export default function AutoPlayMusic({
   src,
   volume = 0.3,
-  youtubeId = 'l21wGxlWwPw',
-  title = 'fukumean',
-  artist = 'Gunna'
+  youtubeId = 'h_6-zy6Fjjc',
+  title = 'Come Through',
+  artist = 'The Weeknd'
 }: AutoPlayMusicProps) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -164,74 +164,85 @@ export default function AutoPlayMusic({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="bg-gradient-to-b from-gray-800/95 to-gray-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl w-72"
+              className="bg-neutral-900/90 backdrop-blur-md border border-white/10 p-4 w-80 relative"
+              style={{ clipPath: 'polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%)' }}
             >
+              {/* Tech Accents */}
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white/20" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white/20" />
+
               {/* Header */}
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <X
-                    className="w-4 h-4 text-white/60 hover:text-white cursor-pointer transition-colors"
+                  <button
                     onClick={() => setIsExpanded(false)}
-                  />
-                  <span className="text-xs text-white/60">ซ่อนเพลง</span>
+                    className="text-neutral-500 hover:text-white transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                  <span className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">Hide Player</span>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-green-400">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  กำลังเล่นอยู่
+                <div className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-red-500 uppercase">
+                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></span>
+                  Now Playing
                 </div>
               </div>
 
               {/* Thumbnail */}
-              <div className="relative mb-4 rounded-xl overflow-hidden aspect-video">
+              <div className="relative mb-4 aspect-video bg-black border border-white/5 group overflow-hidden">
                 <img
                   src={thumbnailUrl}
                   alt={title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+
+                {/* Scanline effect */}
+                <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none opacity-20" />
               </div>
 
               {/* Song Info */}
-              <div className="mb-4 text-center">
-                <h3 className="text-white font-semibold text-sm truncate">{title}</h3>
-                <p className="text-white/60 text-xs">{artist}</p>
+              <div className="mb-6 text-center">
+                <h3 className="text-white font-bold text-lg uppercase tracking-wider truncate mb-1" style={{ fontFamily: 'var(--font-asylum)' }}>{title}</h3>
+                <p className="text-neutral-500 text-xs uppercase tracking-widest">{artist}</p>
               </div>
 
               {/* Progress Bar */}
-              <div className="mb-4">
+              <div className="mb-6 px-1">
                 <input
                   type="range"
                   min="0"
                   max={duration || 100}
                   value={currentTime}
                   onChange={handleSeek}
-                  className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer progress-slider"
+                  className="w-full h-1 bg-neutral-800 rounded-none appearance-none cursor-pointer progress-slider"
                 />
-                <div className="flex justify-between text-xs text-white/50 mt-1">
+                <div className="flex justify-between text-[10px] font-mono text-neutral-500 mt-2">
                   <span>{formatTime(currentTime)}</span>
                   <span>{formatTime(duration)}</span>
                 </div>
               </div>
 
               {/* Controls */}
-              <div className="flex items-center justify-center gap-6 mb-4">
+              <div className="flex items-center justify-center gap-6 mb-6">
                 <button
                   onClick={togglePlayPause}
-                  className="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-transform shadow-lg"
+                  className="w-12 h-12 bg-white text-black flex items-center justify-center hover:bg-red-600 hover:text-white transition-all duration-300 clip-path-button"
+                  style={{ clipPath: 'polygon(20% 0, 100% 0, 100% 80%, 80% 100%, 0 100%, 0 20%)' }}
                 >
                   {isPlaying ? (
-                    <Pause className="w-6 h-6 text-gray-900" />
+                    <Pause className="w-5 h-5 fill-current" />
                   ) : (
-                    <Play className="w-6 h-6 text-gray-900 ml-1" />
+                    <Play className="w-5 h-5 fill-current ml-0.5" />
                   )}
                 </button>
               </div>
 
               {/* Volume */}
-              <div className="flex items-center gap-3 px-2">
+              <div className="flex items-center gap-3 px-2 border-t border-white/5 pt-4">
                 <button
                   onClick={toggleMute}
-                  className="text-white/60 hover:text-white transition-colors"
+                  className="text-neutral-500 hover:text-white transition-colors"
                 >
                   {isMuted || currentVolume === 0 ? (
                     <VolumeX className="w-4 h-4" />
@@ -247,7 +258,7 @@ export default function AutoPlayMusic({
                   step="0.1"
                   value={isMuted ? 0 : currentVolume}
                   onChange={handleVolumeChange}
-                  className="flex-1 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer volume-slider"
+                  className="flex-1 h-1 bg-neutral-800 rounded-none appearance-none cursor-pointer volume-slider"
                 />
               </div>
             </motion.div>
@@ -260,33 +271,34 @@ export default function AutoPlayMusic({
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2 }}
               onClick={() => setIsExpanded(true)}
-              className="bg-gradient-to-r from-gray-800/95 to-gray-900/95 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl cursor-pointer hover:scale-105 transition-transform group"
+              className="bg-neutral-900/90 backdrop-blur-md border border-white/10 p-2 cursor-pointer hover:border-white/30 transition-colors group w-64"
+              style={{ clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 20%)' }}
             >
               <div className="flex items-center gap-3">
                 {/* Mini Thumbnail */}
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0">
+                <div className="relative w-10 h-10 bg-black border border-white/10 flex-shrink-0">
                   <img
                     src={thumbnailUrl}
                     alt={title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity"
                   />
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center justify-center">
                     {isPlaying ? (
                       <div className="flex items-center gap-0.5">
-                        <span className="w-1 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                        <span className="w-1 h-4 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                        <span className="w-1 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                        <span className="w-0.5 h-2 bg-red-500 animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                        <span className="w-0.5 h-3 bg-red-500 animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                        <span className="w-0.5 h-1.5 bg-red-500 animate-bounce" style={{ animationDelay: '300ms' }}></span>
                       </div>
                     ) : (
-                      <Music2 className="w-4 h-4 text-white" />
+                      <Music2 className="w-3 h-3 text-white/50" />
                     )}
                   </div>
                 </div>
 
                 {/* Song Info - Compact */}
                 <div className="flex-1 min-w-0 pr-2">
-                  <p className="text-white text-xs font-medium truncate">{title}</p>
-                  <p className="text-white/50 text-[10px] truncate">{artist}</p>
+                  <p className="text-white text-xs font-bold uppercase tracking-wider truncate" style={{ fontFamily: 'var(--font-asylum)' }}>{title}</p>
+                  <p className="text-neutral-500 text-[10px] uppercase tracking-widest truncate">{artist}</p>
                 </div>
 
                 {/* Play/Pause Button */}
@@ -295,12 +307,12 @@ export default function AutoPlayMusic({
                     e.stopPropagation()
                     togglePlayPause()
                   }}
-                  className="w-8 h-8 bg-white rounded-full flex items-center justify-center hover:scale-110 transition-transform flex-shrink-0"
+                  className="w-8 h-8 bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors flex-shrink-0 border border-white/10"
                 >
                   {isPlaying ? (
-                    <Pause className="w-4 h-4 text-gray-900" />
+                    <Pause className="w-3 h-3 text-white" />
                   ) : (
-                    <Play className="w-4 h-4 text-gray-900 ml-0.5" />
+                    <Play className="w-3 h-3 text-white ml-0.5" />
                   )}
                 </button>
               </div>
@@ -312,40 +324,42 @@ export default function AutoPlayMusic({
       <style jsx>{`
         .progress-slider::-webkit-slider-thumb {
           appearance: none;
-          width: 12px;
+          width: 4px;
           height: 12px;
-          border-radius: 50%;
-          background: white;
+          background: #ef4444;
           cursor: pointer;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          border: none;
+          transition: background 0.2s;
+        }
+        .progress-slider:hover::-webkit-slider-thumb {
+          background: #fff;
         }
 
         .progress-slider::-moz-range-thumb {
-          width: 12px;
+          width: 4px;
           height: 12px;
-          border-radius: 50%;
-          background: white;
+          background: #ef4444;
           cursor: pointer;
           border: none;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+          transition: background 0.2s;
         }
 
         .volume-slider::-webkit-slider-thumb {
           appearance: none;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background: white;
+          width: 8px;
+          height: 8px;
+          background: #fff;
           cursor: pointer;
+          transform: rotate(45deg);
         }
 
         .volume-slider::-moz-range-thumb {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background: white;
+          width: 8px;
+          height: 8px;
+          background: #fff;
           cursor: pointer;
           border: none;
+          transform: rotate(45deg);
         }
 
         @keyframes bounce {

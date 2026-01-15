@@ -57,7 +57,7 @@ export default function RootLayout({
       <body
         className={`${asylumFont.variable} ${chakraPetch.variable} antialiased bg-black text-white min-h-screen flex flex-col`}
       >
-        {/* <AutoPlayMusic src="/music/JAGUARX-theme.mp3" volume={0.2} /> */}
+        <AutoPlayMusic src="/music/mali-theme.mp3" volume={0.2} />
         <main className="flex-1">
           {children}
         </main>
