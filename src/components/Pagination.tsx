@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface PaginationProps {
@@ -40,8 +40,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
           key={page}
           onClick={() => onPageChange(page)}
           className={`w-8 h-8 flex items-center justify-center text-sm font-bold border transition-colors ${page === currentPage
-              ? 'bg-white text-black border-white'
-              : 'bg-transparent text-white border-white/10 hover:border-white/50'
+            ? 'bg-white text-black border-white'
+            : 'bg-transparent text-white border-white/10 hover:border-white/50'
             }`}
         >
           {page}

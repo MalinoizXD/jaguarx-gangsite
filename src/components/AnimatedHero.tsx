@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
 const Logo3D = dynamic(() => import('./Logo3D'), {

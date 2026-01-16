@@ -32,10 +32,13 @@ export default function AutoPlayMusic({
   // Get YouTube thumbnail
   const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`
 
-  // Don't render on admin page
-  if (pathname?.startsWith('/admin')) return null
+  // Check if on admin page
+  const isAdminPage = pathname?.startsWith('/admin')
 
   useEffect(() => {
+    // Don't run audio logic on admin page
+    if (isAdminPage) return
+
     // Ensure we're in a browser environment
     if (typeof window === 'undefined') return
 
@@ -94,7 +97,7 @@ export default function AutoPlayMusic({
         audio.pause()
       }
     }
-  }, [src, currentVolume])
+  }, [src, currentVolume, isAdminPage])
 
   const togglePlayPause = () => {
     const audio = audioRef.current
@@ -145,6 +148,9 @@ export default function AutoPlayMusic({
     const seconds = Math.floor(time % 60)
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
+
+  // Don't render on admin page
+  if (isAdminPage) return null
 
   return (
     <>

@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   Shield, Lock, LogOut, Users, UserPlus, Search,
-  Trash2, Edit, Check, X, ChevronLeft, ChevronRight,
-  AlertTriangle, Upload, Facebook, Globe, Star,
-  LayoutGrid, List, Filter
+  Trash2, Edit, Check, ChevronLeft, ChevronRight,
+  Upload, Facebook, Globe, Star
 } from 'lucide-react'
 
 // Thai translations - Updated for Esport Theme
