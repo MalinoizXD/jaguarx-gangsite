@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "JAGUARX",
     images: [
       {
-        url: "/uploads/1760010475208-0une9deywda1ye.png",
+        url: "/uploads/jaguarxlogo.png",
         width: 1200,
         height: 630,
         alt: "JAGUARX Gang",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "JAGUARX ONLY",
     description: "JAGUARX",
-    images: ["/uploads/1760010475208-0une9deywda1ye.png"],
+    images: ["/uploads/jaguarxlogo.png"],
   },
   metadataBase: new URL("https://www.jaguarx.xyz"),
 };
@@ -54,6 +54,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th" className="dark">
+      <head>
+        <link rel="preload" href="/logo.glb" as="fetch" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${asylumFont.variable} ${chakraPetch.variable} antialiased bg-black text-white min-h-screen flex flex-col`}
       >

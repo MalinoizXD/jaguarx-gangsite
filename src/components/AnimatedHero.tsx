@@ -20,7 +20,7 @@ export default function AnimatedHero() {
     const heroRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        setIsLoaded(true)
+        // setIsLoaded(true) - Controlled by Logo3D now
 
         const handleScroll = () => setScrollY(window.scrollY)
         window.addEventListener('scroll', handleScroll)
@@ -110,8 +110,8 @@ export default function AnimatedHero() {
                 <div className="relative flex flex-col items-center z-10">
 
                     {/* 3D Spinning Logo */}
-                    <div className="w-full max-w-2xl mx-auto">
-                        <Logo3D />
+                    <div className={`w-full max-w-2xl mx-auto transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                        <Logo3D onLoaded={() => setIsLoaded(true)} />
                     </div>
 
 

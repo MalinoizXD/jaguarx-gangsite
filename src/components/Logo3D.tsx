@@ -1,13 +1,17 @@
 'use client'
 
-import { useRef, Suspense } from 'react'
+import { useRef, Suspense, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, OrbitControls } from '@react-three/drei'
 import { Group } from 'three'
 
-function LogoModel() {
+function LogoModel({ onLoaded }: { onLoaded?: () => void }) {
     const groupRef = useRef<Group>(null)
     const { scene } = useGLTF('/logo.glb')
+
+    useEffect(() => {
+        onLoaded?.()
+    }, [onLoaded])
 
     useFrame((state, delta) => {
         if (groupRef.current) {
@@ -31,7 +35,7 @@ function LoadingFallback() {
     )
 }
 
-export default function Logo3D() {
+export default function Logo3D({ onLoaded }: { onLoaded?: () => void }) {
     return (
         <div className="w-full h-[300px] md:h-[400px]">
             <Canvas
@@ -44,7 +48,7 @@ export default function Logo3D() {
                 <pointLight position={[-5, -5, -5]} intensity={0.5} />
 
                 <Suspense fallback={<LoadingFallback />}>
-                    <LogoModel />
+                    <LogoModel onLoaded={onLoaded} />
                 </Suspense>
 
                 <OrbitControls
