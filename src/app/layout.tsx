@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Chakra_Petch } from "next/font/google";
+import { Chakra_Petch, Prompt } from "next/font/google";
 import "./globals.css";
 import AutoPlayMusic from "../components/AutoPlayMusic";
 
@@ -12,6 +12,12 @@ const asylumFont = localFont({
 
 const chakraPetch = Chakra_Petch({
   variable: "--font-chakra-petch",
+  subsets: ["latin", "thai"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const prompt = Prompt({
+  variable: "--font-prompt",
   subsets: ["latin", "thai"],
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -58,7 +64,7 @@ export default function RootLayout({
         <link rel="preload" href="/logo.glb" as="fetch" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${asylumFont.variable} ${chakraPetch.variable} antialiased bg-black text-white min-h-screen flex flex-col`}
+        className={`${asylumFont.variable} ${chakraPetch.variable} ${prompt.variable} antialiased bg-black text-white min-h-screen flex flex-col`}
       >
         <AutoPlayMusic src="/music/mali-theme.mp3" volume={0.2} />
         <main className="flex-1">

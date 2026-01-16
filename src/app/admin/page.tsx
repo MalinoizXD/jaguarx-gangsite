@@ -12,73 +12,73 @@ import {
 // Thai translations - Updated for Esport Theme
 const translations = {
   // Authentication
-  adminLogin: 'RESTRICTED ACCESS',
-  password: 'ACCESS CODE',
-  login: 'INITIALIZE',
-  checkingAuth: 'AUTHENTICATING...',
-  invalidPassword: 'ACCESS DENIED',
+  adminLogin: 'เข้าสู่ระบบผู้ดูแล',
+  password: 'รหัสผ่าน',
+  login: 'เข้าสู่ระบบ',
+  checkingAuth: 'กำลังตรวจสอบสิทธิ์...',
+  invalidPassword: 'รหัสผ่านไม่ถูกต้อง',
 
   // Main UI
-  adminPanel: 'COMMAND CENTER',
-  logout: 'DISCONNECT',
+  adminPanel: 'Mali Panel',
+  logout: 'ออกจากระบบ',
 
   // Form
-  addNewMember: 'NEW MEMBER',
-  editMember: 'EDIT MEMBER',
-  cancel: 'CANCEL',
-  firstName: 'NAME',
-  lastName: 'SURNAME',
-  role: 'ROLE',
-  memberOption: 'MEMBER',
-  leaderOption: 'LEADER',
-  facebookUrl: 'FACEBOOK LINK',
-  leader: 'LEADER',
-  profileImage: 'PROFILE IMAGE',
-  selectedFile: 'FILE SELECTED',
-  updateMember: 'UPDATE MEMBER',
-  addMember: 'ADD MEMBER',
-  uploading: 'UPLOADING...',
+  addNewMember: 'เพิ่มสมาชิกใหม่',
+  editMember: 'แก้ไขข้อมูลสมาชิก',
+  cancel: 'ยกเลิก',
+  firstName: 'ชื่อจริง',
+  lastName: 'นามสกุล',
+  role: 'บทบาท',
+  memberOption: 'สมาชิก',
+  leaderOption: 'หัวหน้า',
+  facebookUrl: 'ลิงก์เฟสบุ๊ค',
+  leader: 'หัวหน้า',
+  profileImage: 'รูปโปรไฟล์',
+  selectedFile: 'เลือกไฟล์แล้ว',
+  updateMember: 'อัปเดตข้อมูล',
+  addMember: 'บันทึกข้อมูล',
+  uploading: 'กำลังอัปโหลด...',
 
   // Success Messages
-  loginSuccess: 'LOGIN SUCCESSFUL',
-  uploadSuccess: 'UPLOAD COMPLETE',
-  memberSaved: 'MEMBER SAVED',
-  memberDeleted: 'MEMBER DELETED',
-  membersDeleted: 'MEMBERS DELETED',
+  loginSuccess: 'เข้าสู่ระบบสำเร็จ',
+  uploadSuccess: 'อัปโหลดเสร็จสิ้น',
+  memberSaved: 'บันทึกข้อมูลสมาชิกแล้ว',
+  memberDeleted: 'ลบสมาชิกแล้ว',
+  membersDeleted: 'ลบสมาชิกที่เลือกแล้ว',
 
   // Error Messages
-  uploadFailed: 'UPLOAD FAILED',
-  saveFailed: 'SAVE FAILED',
-  deleteFailed: 'DELETE FAILED',
-  deleteMultipleFailed: 'BULK DELETE FAILED',
+  uploadFailed: 'อัปโหลดล้มเหลว',
+  saveFailed: 'บันทึกไม่สำเร็จ',
+  deleteFailed: 'ลบไม่สำเร็จ',
+  deleteMultipleFailed: 'ลบหลายรายการไม่สำเร็จ',
 
   // Members Management
-  membersManagement: 'MEMBERS MANAGEMENT',
-  total: 'TOTAL',
-  leaders: 'LEADERS',
-  showing: 'SHOWING',
+  membersManagement: 'จัดการสมาชิก',
+  total: 'ทั้งหมด',
+  leaders: 'Leaders',
+  showing: 'กำลังแสดง',
 
   // Search & Filters
-  searchByName: 'SEARCH MEMBERS...',
-  leadersOnly: 'LEADERS ONLY',
-  deleteSelected: 'PURGE SELECTED',
-  selectAll: 'SELECT ALL',
-  pageOf: 'OF',
+  searchByName: 'ค้นหาชื่อสมาชิก...',
+  leadersOnly: 'เฉพาะหัวหน้า',
+  deleteSelected: 'ลบที่เลือก',
+  selectAll: 'เลือกทั้งหมด',
+  pageOf: 'จาก',
   of: '/',
 
   // Actions
-  edit: 'EDIT',
-  delete: 'PURGE',
-  previous: 'PREV',
-  next: 'NEXT',
+  edit: 'แก้ไข',
+  delete: 'ลบ',
+  previous: 'ก่อนหน้า',
+  next: 'ถัดไป',
 
   // Messages
-  noMembersMatch: 'NO MATCHING RECORDS',
-  noMembersFound: 'DATABASE EMPTY',
-  confirmDelete: 'CONFIRM PURGE:',
-  confirmDeleteSingle: 'CONFIRM PURGE OF THIS TARGET?',
-  confirmDeleteQuestion: 'TARGETS?',
-  deleteSuccess: 'PURGE SUCCESSFUL'
+  noMembersMatch: 'ไม่พบข้อมูลที่ตรงกัน',
+  noMembersFound: 'ไม่พบสมาชิกในระบบ',
+  confirmDelete: 'ยืนยันการลบ',
+  confirmDeleteSingle: 'คุณแน่ใจหรือไม่ที่จะลบสมาชิกนี้?',
+  confirmDeleteQuestion: 'รายการ?',
+  deleteSuccess: 'ลบสำเร็จ'
 }
 
 interface Member {
@@ -440,7 +440,7 @@ export default function AdminPage() {
 
   // Main Dashboard
   return (
-    <div className='min-h-screen bg-black text-white font-chakra relative'>
+    <div className='min-h-screen bg-black text-white font-prompt relative'>
       <div className="fixed inset-0 bg-[url('/grid.png')] opacity-10 pointer-events-none"></div>
       <Toaster position="bottom-right" toastOptions={{
         style: {
@@ -456,7 +456,7 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-4">
-              <Shield className="w-8 h-8 text-red-600" />
+              <img src="/uploads/jaguarxlogo.png" alt="JAGUARX Logo" className="w-12 h-12 object-contain" />
               <div>
                 <h1 className="text-xl font-bold tracking-widest" style={{ fontFamily: 'var(--font-asylum)' }}>
                   {translations.adminPanel}
@@ -482,8 +482,8 @@ export default function AdminPage() {
           {[
             { label: translations.total, value: members.length, icon: Users, color: 'text-white' },
             { label: translations.leaders, value: members.filter(m => m.role !== 'Member').length, icon: Star, color: 'text-yellow-500' },
-            { label: 'REGULAR', value: members.filter(m => m.role === 'Member').length, icon: UserPlus, color: 'text-neutral-400' },
-            { label: 'CONNECTED', value: members.filter(m => m.sociallinks && Object.values(m.sociallinks).some(link => link && link.trim() !== '')).length, icon: Globe, color: 'text-blue-500' }
+            { label: 'สมาชิกทั่วไป', value: members.filter(m => m.role === 'Member').length, icon: UserPlus, color: 'text-neutral-400' },
+            { label: 'เชื่อมต่อแล้ว', value: members.filter(m => m.sociallinks && Object.values(m.sociallinks).some(link => link && link.trim() !== '')).length, icon: Globe, color: 'text-blue-500' }
           ].map((stat, index) => (
             <div key={index} className="bg-neutral-900/50 border border-white/5 p-6 relative group hover:border-white/20 transition-colors">
               <div className="absolute top-0 right-0 w-2 h-2 bg-white/10 group-hover:bg-red-600 transition-colors"></div>
@@ -541,7 +541,7 @@ export default function AdminPage() {
                     ) : (
                       <div className="text-center text-neutral-500">
                         <Upload className="w-8 h-8 mx-auto mb-2" />
-                        <span className="text-xs tracking-widest">UPLOAD IMAGE</span>
+                        <span className="text-xs tracking-widest">อัปโหลดรูปภาพ</span>
                       </div>
                     )}
                   </div>
@@ -555,7 +555,7 @@ export default function AdminPage() {
                       value={form.firstname || ''}
                       onChange={(e) => setForm({ ...form, firstname: e.target.value })}
                       className="w-full bg-black/50 border border-white/10 p-3 text-sm focus:border-red-600 focus:outline-none transition-colors"
-                      placeholder="ENTER NAME"
+                      placeholder="กรอกชื่อจริง"
                     />
                   </div>
                   <div>
@@ -565,7 +565,7 @@ export default function AdminPage() {
                       value={form.lastname || ''}
                       onChange={(e) => setForm({ ...form, lastname: e.target.value })}
                       className="w-full bg-black/50 border border-white/10 p-3 text-sm focus:border-red-600 focus:outline-none transition-colors"
-                      placeholder="ENTER SURNAME"
+                      placeholder="กรอกนามสกุล"
                     />
                   </div>
                 </div>
@@ -583,7 +583,7 @@ export default function AdminPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] text-neutral-500 tracking-widest mb-1 block">PRIORITY</label>
+                    <label className="text-[10px] text-neutral-500 tracking-widest mb-1 block">ลำดับความสำคัญ</label>
                     <input
                       type="number"
                       value={form.priority || ''}
@@ -641,14 +641,14 @@ export default function AdminPage() {
                   onClick={() => setShowLeadersOnly(!showLeadersOnly)}
                   className={`px-3 py-2 text-xs tracking-widest border ${showLeadersOnly ? 'bg-red-600/20 border-red-600 text-red-500' : 'border-white/10 text-neutral-400 hover:border-white/30'}`}
                 >
-                  LEADERS
+                  เฉพาะหัวหน้า
                 </button>
                 {selectedMembers.length > 0 && (
                   <button
                     onClick={handleBulkDelete}
                     className="px-3 py-2 text-xs tracking-widest bg-red-600 text-white hover:bg-red-700 transition-colors"
                   >
-                    DELETE ({selectedMembers.length})
+                    ลบ ({selectedMembers.length})
                   </button>
                 )}
               </div>
@@ -659,9 +659,9 @@ export default function AdminPage() {
               <div className="col-span-1 flex items-center">
                 <input type="checkbox" checked={selectAll} onChange={handleSelectAll} className="accent-red-600" />
               </div>
-              <div className="col-span-5">Member</div>
-              <div className="col-span-3">Role</div>
-              <div className="col-span-3 text-right">Actions</div>
+              <div className="col-span-5">สมาชิก</div>
+              <div className="col-span-3">บทบาท</div>
+              <div className="col-span-3 text-right">จัดการ</div>
             </div>
 
             {/* List Items */}
@@ -695,13 +695,13 @@ export default function AdminPage() {
                       <div>
                         <p className="text-sm font-bold text-white">{member.firstname} {member.lastname}</p>
                         {member.priority && member.priority > 0 && (
-                          <span className="text-[10px] text-yellow-500 tracking-widest">PRIORITY {member.priority}</span>
+                          <span className="text-[10px] text-yellow-500 tracking-widest">ลำดับ {member.priority}</span>
                         )}
                       </div>
                     </div>
                     <div className="col-span-3">
                       <span className={`text-xs tracking-widest px-2 py-1 border ${member.role !== 'Member' ? 'border-red-600 text-red-500' : 'border-neutral-700 text-neutral-500'}`}>
-                        {member.role === 'Member' ? 'MEMBER' : 'LEADER'}
+                        {member.role === 'Member' ? 'สมาชิก' : 'หัวหน้า'}
                       </span>
                     </div>
                     <div className="col-span-3 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -749,7 +749,7 @@ export default function AdminPage() {
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <span className="px-4 py-2 text-sm tracking-widest text-neutral-500">
-                  PAGE {currentPage} / {totalPages}
+                  หน้า {currentPage} / {totalPages}
                 </span>
                 <button
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
