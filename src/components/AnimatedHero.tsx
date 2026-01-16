@@ -43,7 +43,7 @@ export default function AnimatedHero() {
             onMouseMove={handleMouseMove}
             className="relative min-h-screen overflow-hidden bg-black"
             style={{
-                backgroundImage: 'url(/uploads/1760010475208-0une9deywda1ye.png)',
+                backgroundImage: 'url(https://pub-7827a1beaea74d1bb210e941351e7a23.r2.dev/1760010475208-0une9deywda1ye_optimized.png)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundAttachment: 'fixed',
