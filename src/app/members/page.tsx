@@ -145,7 +145,7 @@ export default function MembersPage() {
                   <span className="text-xs text-neutral-500 mb-2 tracking-widest">/ 01</span>
                 </div>
                 <motion.div
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                  className="flex flex-wrap justify-center gap-4"
                   initial="hidden"
                   animate="visible"
                   variants={{
@@ -153,7 +153,9 @@ export default function MembersPage() {
                   }}
                 >
                   {data.founders.map((founder) => (
-                    <MemberCard key={founder.id} member={founder} />
+                    <div key={founder.id} className="w-full md:w-[calc(50%-0.5rem)] lg:w-[calc(33.33%-0.7rem)]">
+                      <MemberCard member={founder} />
+                    </div>
                   ))}
                 </motion.div>
               </section>

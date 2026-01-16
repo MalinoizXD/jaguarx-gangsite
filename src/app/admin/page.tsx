@@ -2,78 +2,84 @@
 
 import { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Shield, Lock, LogOut, Users, UserPlus, Search,
+  Trash2, Edit, Check, X, ChevronLeft, ChevronRight,
+  AlertTriangle, Upload, Facebook, Globe, Star,
+  LayoutGrid, List, Filter
+} from 'lucide-react'
 
-// Thai translations - using natural Thai phrases that Thai people understand
+// Thai translations - Updated for Esport Theme
 const translations = {
   // Authentication
-  adminLogin: 'เข้าสู่ระบบแอดมิน',
-  password: 'รหัสผ่าน',
-  login: 'เข้าสู่ระบบ',
-  checkingAuth: 'กำลังตรวจสอบการเข้าสู่ระบบ...',
-  invalidPassword: 'รหัสผ่านไม่ถูกต้อง',
+  adminLogin: 'RESTRICTED ACCESS',
+  password: 'ACCESS CODE',
+  login: 'INITIALIZE',
+  checkingAuth: 'AUTHENTICATING...',
+  invalidPassword: 'ACCESS DENIED',
 
   // Main UI
-  adminPanel: 'แผงควบคุมแอดมิน',
-  logout: 'ออกจากระบบ',
+  adminPanel: 'COMMAND CENTER',
+  logout: 'DISCONNECT',
 
   // Form
-  addNewMember: 'เพิ่มสมาชิกใหม่',
-  editMember: 'แก้ไขสมาชิก',
-  cancel: 'ยกเลิก',
-  firstName: 'ชื่อจริง',
-  lastName: 'นามสกุล',
-  role: 'ตำแหน่ง/บทบาท',
-  memberOption: 'สมาชิก',
-  leaderOption: 'หัวหน้า',
-  facebookUrl: 'ลิงก์เฟซบุ๊ก',
-  // websiteUrl: 'ลิงก์เว็บไซต์',
-  leader: 'หัวหน้า',
-  profileImage: 'รูปโปรไฟล์',
-  selectedFile: 'เลือกไฟล์แล้ว',
-  updateMember: 'อัปเดตสมาชิก',
-  addMember: 'เพิ่มสมาชิก',
-  uploading: 'กำลังอัปโหลด...',
+  addNewMember: 'NEW MEMBER',
+  editMember: 'EDIT MEMBER',
+  cancel: 'CANCEL',
+  firstName: 'NAME',
+  lastName: 'SURNAME',
+  role: 'ROLE',
+  memberOption: 'MEMBER',
+  leaderOption: 'LEADER',
+  facebookUrl: 'FACEBOOK LINK',
+  leader: 'LEADER',
+  profileImage: 'PROFILE IMAGE',
+  selectedFile: 'FILE SELECTED',
+  updateMember: 'UPDATE MEMBER',
+  addMember: 'ADD MEMBER',
+  uploading: 'UPLOADING...',
 
   // Success Messages
-  loginSuccess: 'เข้าสู่ระบบสำเร็จ',
-  uploadSuccess: 'อัปโหลดรูปภาพสำเร็จ',
-  memberSaved: 'บันทึกสมาชิกสำเร็จ',
-  memberDeleted: 'ลบสมาชิกสำเร็จ',
-  membersDeleted: 'ลบสมาชิกหลายคนสำเร็จ',
+  loginSuccess: 'LOGIN SUCCESSFUL',
+  uploadSuccess: 'UPLOAD COMPLETE',
+  memberSaved: 'MEMBER SAVED',
+  memberDeleted: 'MEMBER DELETED',
+  membersDeleted: 'MEMBERS DELETED',
 
   // Error Messages
-  uploadFailed: 'อัปโหลดรูปภาพล้มเหลว',
-  saveFailed: 'บันทึกสมาชิกล้มเหลว',
-  deleteFailed: 'ลบสมาชิกล้มเหลว',
-  deleteMultipleFailed: 'ลบสมาชิกหลายคนล้มเหลว',
+  uploadFailed: 'UPLOAD FAILED',
+  saveFailed: 'SAVE FAILED',
+  deleteFailed: 'DELETE FAILED',
+  deleteMultipleFailed: 'BULK DELETE FAILED',
 
   // Members Management
-  membersManagement: 'การจัดการสมาชิก',
-  total: 'ทั้งหมด',
-  leaders: 'หัวหน้า',
-  showing: 'แสดง',
+  membersManagement: 'MEMBERS MANAGEMENT',
+  total: 'TOTAL',
+  leaders: 'LEADERS',
+  showing: 'SHOWING',
 
   // Search & Filters
-  searchByName: 'ค้นหาตามชื่อ...',
-  leadersOnly: 'เฉพาะหัวหน้า',
-  deleteSelected: 'ลบที่เลือก',
-  selectAll: 'เลือกทั้งหมด',
-  pageOf: 'หน้า',
-  of: 'จาก',
+  searchByName: 'SEARCH MEMBERS...',
+  leadersOnly: 'LEADERS ONLY',
+  deleteSelected: 'PURGE SELECTED',
+  selectAll: 'SELECT ALL',
+  pageOf: 'OF',
+  of: '/',
 
   // Actions
-  edit: 'แก้ไข',
-  delete: 'ลบ',
-  previous: 'ก่อนหน้า',
-  next: 'ถัดไป',
+  edit: 'EDIT',
+  delete: 'PURGE',
+  previous: 'PREV',
+  next: 'NEXT',
 
   // Messages
-  noMembersMatch: 'ไม่มีสมาชิกที่ตรงกับตัวกรองของคุณ',
-  noMembersFound: 'ไม่พบสมาชิก',
-  confirmDelete: 'ลบสมาชิกจำนวน',
-  confirmDeleteSingle: 'ลบสมาชิกคนนี้หรือไม่?',
-  confirmDeleteQuestion: 'คนหรือไม่?',
-  deleteSuccess: 'ลบสมาชิกสำเร็จ'
+  noMembersMatch: 'NO MATCHING RECORDS',
+  noMembersFound: 'DATABASE EMPTY',
+  confirmDelete: 'CONFIRM PURGE:',
+  confirmDeleteSingle: 'CONFIRM PURGE OF THIS TARGET?',
+  confirmDeleteQuestion: 'TARGETS?',
+  deleteSuccess: 'PURGE SUCCESSFUL'
 }
 
 interface Member {
@@ -124,7 +130,6 @@ export default function AdminPage() {
             setIsAuthenticated(true)
             fetchMembers()
           } else {
-            // Token is invalid, remove it
             localStorage.removeItem('admin_token')
           }
         } catch (error) {
@@ -145,11 +150,10 @@ export default function AdminPage() {
     })
     if (res.ok) {
       const data = await res.json()
-      // Store token in localStorage
       localStorage.setItem('admin_token', data.token)
       setIsAuthenticated(true)
       fetchMembers()
-      setPassword('') // Clear password field
+      setPassword('')
       toast.success(translations.loginSuccess)
     } else {
       toast.error(translations.invalidPassword)
@@ -188,26 +192,22 @@ export default function AdminPage() {
   useEffect(() => {
     let filtered = members
 
-    // Filter by leaders if selected
     if (showLeadersOnly) {
       filtered = filtered.filter(member => member.role !== 'Member')
     }
 
-    // Filter by priority
     if (priorityFilter === 'priority') {
       filtered = filtered.filter(member => member.priority && member.priority > 0)
     } else if (priorityFilter === 'no-priority') {
       filtered = filtered.filter(member => !member.priority || member.priority === 0)
     }
 
-    // Filter by social links
     if (socialFilter === 'with-social') {
       filtered = filtered.filter(member => member.sociallinks && Object.values(member.sociallinks).some(link => link && link.trim() !== ''))
     } else if (socialFilter === 'no-social') {
       filtered = filtered.filter(member => !member.sociallinks || !Object.values(member.sociallinks).some(link => link && link.trim() !== ''))
     }
 
-    // Search by name
     if (searchTerm) {
       filtered = filtered.filter(member =>
         `${member.firstname} ${member.lastname || 'JAGUARX'}`.toLowerCase().includes(searchTerm.toLowerCase())
@@ -215,8 +215,8 @@ export default function AdminPage() {
     }
 
     setFilteredMembers(filtered)
-    setCurrentPage(1) // Reset to first page when filters change
-    setSelectedMembers([]) // Clear selections when filters change
+    setCurrentPage(1)
+    setSelectedMembers([])
     setSelectAll(false)
   }, [members, searchTerm, showLeadersOnly, priorityFilter, socialFilter])
 
@@ -237,7 +237,6 @@ export default function AdminPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Validate required fields
     if (!form.firstname?.trim()) {
       toast.error('กรุณากรอกชื่อจริง')
       return
@@ -276,13 +275,12 @@ export default function AdminPage() {
       headers['Authorization'] = `Bearer ${token}`
     }
 
-    // Convert memberType to role for API
     const formData = {
       ...form,
       imageUrl,
       role: form.memberType === 'leader' ? 'Leader' : 'Member'
     }
-    delete formData.memberType // Remove memberType from the data sent to API
+    delete formData.memberType
 
     const res = await fetch(url, {
       method,
@@ -295,16 +293,14 @@ export default function AdminPage() {
       setForm({ memberType: 'member' })
       setImageFile(null)
       setEditing(null)
-      toast.success(editing ? 'อัปเดตสมาชิกสำเร็จ' : 'เพิ่มสมาชิกสำเร็จ')
+      toast.success(editing ? translations.memberSaved : translations.memberSaved)
     } else {
       const errorData = await res.json()
-
       if (res.status === 409 && errorData.similarMembers?.length > 0) {
-        // Show similar members in the error
         const similarNames = errorData.similarMembers.map((m: { firstname: string; lastname: string }) =>
           `${m.firstname} ${m.lastname}`
         ).join(', ')
-        toast.error(`${errorData.error}\nสมาชิกที่มีชื่อคล้ายกัน: ${similarNames}`)
+        toast.error(`${errorData.error}\nSimilar: ${similarNames}`)
       } else {
         toast.error(errorData.error || translations.saveFailed)
       }
@@ -347,7 +343,7 @@ export default function AdminPage() {
             headers
           }))
         )
-        toast.success(`${translations.membersDeleted} (${selectedMembers.length} คน)`)
+        toast.success(`${translations.membersDeleted} (${selectedMembers.length})`)
         fetchMembers()
         setSelectedMembers([])
         setSelectAll(false)
@@ -374,646 +370,400 @@ export default function AdminPage() {
     setSelectAll(!selectAll)
   }
 
-  // Show loading screen while checking authentication
+  // Loading Screen
   if (checkingAuth) {
     return (
-      <div className='min-h-screen bg-gray-900 flex items-center justify-center'>
-        <div
-          className='bg-gray-800 p-8 rounded-lg flex items-center space-x-4'
-        >
-          <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-red-600'></div>
-          <span className='text-white'>{translations.checkingAuth}</span>
+      <div className='min-h-screen bg-black flex items-center justify-center relative overflow-hidden'>
+        <div className="absolute inset-0 bg-[url('/grid.png')] opacity-20"></div>
+        <div className='relative z-10 flex flex-col items-center gap-4'>
+          <div className='w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin'></div>
+          <span className='text-red-500 font-bold tracking-[0.2em] animate-pulse'>{translations.checkingAuth}</span>
         </div>
       </div>
     )
   }
 
+  // Login Screen
   if (!isAuthenticated) {
     return (
-      <div className='min-h-screen bg-gray-900 flex items-center justify-center'>
-        <div
-          className='bg-gray-800 p-8 rounded-lg'
+      <div className='min-h-screen bg-black flex items-center justify-center relative overflow-hidden p-4'>
+        <div className="absolute inset-0 bg-[url('/grid.png')] opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black pointer-events-none"></div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className='relative z-10 w-full max-w-md'
         >
-          <h1 className='text-2xl text-white mb-4'>{translations.adminLogin}</h1>
-          <input
-            type='password'
-            placeholder={translations.password}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className='w-full p-2 mb-4 bg-gray-700 text-white rounded'
-            onKeyPress={(e) => e.key === 'Enter' && checkAuth()}
-          />
-          <button
-            onClick={checkAuth}
-            className='w-full bg-red-600 text-white py-2 rounded hover:bg-red-700'
-          >
-            {translations.login}
-          </button>
-        </div>
+          <div className="bg-neutral-900/90 border border-white/10 p-8 md:p-12 relative overflow-hidden group"
+            style={{ clipPath: 'polygon(0 0, 100% 0, 100% 90%, 90% 100%, 0 100%)' }}>
+
+            {/* Decorative corners */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-600"></div>
+            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-red-600"></div>
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-red-600"></div>
+
+            <div className="text-center mb-8">
+              <Shield className="w-12 h-12 text-red-600 mx-auto mb-4" />
+              <h1 className='text-3xl text-white font-bold tracking-widest mb-2' style={{ fontFamily: 'var(--font-asylum)' }}>
+                {translations.adminLogin}
+              </h1>
+              <p className="text-neutral-500 text-xs tracking-[0.2em]">SECURE CONNECTION REQUIRED</p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-500" />
+                <input
+                  type='password'
+                  placeholder={translations.password}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className='w-full bg-black/50 border border-white/10 text-white py-4 pl-12 pr-4 focus:border-red-600 focus:outline-none transition-colors placeholder:text-neutral-700 font-mono tracking-widest'
+                  onKeyPress={(e) => e.key === 'Enter' && checkAuth()}
+                />
+              </div>
+
+              <button
+                onClick={checkAuth}
+                className='w-full bg-white text-black font-bold py-4 hover:bg-red-600 hover:text-white transition-all duration-300 tracking-widest relative overflow-hidden group'
+                style={{ clipPath: 'polygon(0 0, 100% 0, 100% 80%, 95% 100%, 0 100%)' }}
+              >
+                <span className="relative z-10">{translations.login}</span>
+                <div className="absolute inset-0 bg-red-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out -z-0"></div>
+              </button>
+            </div>
+          </div>
+        </motion.div>
       </div>
     )
   }
 
+  // Main Dashboard
   return (
-    <div className='min-h-screen bg-gray-900 p-8'>
-      <div className='max-w-4xl mx-auto'>
-        <div className='flex justify-between items-center mb-8'>
-          <h1 className='text-3xl text-white'>{translations.adminPanel}</h1>
-          <button
-            onClick={logout}
-            className='bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700'
-          >
-            {translations.logout}
-          </button>
-        </div>
+    <div className='min-h-screen bg-black text-white font-chakra relative'>
+      <div className="fixed inset-0 bg-[url('/grid.png')] opacity-10 pointer-events-none"></div>
+      <Toaster position="bottom-right" toastOptions={{
+        style: {
+          background: '#171717',
+          color: '#fff',
+          border: '1px solid rgba(255,255,255,0.1)',
+          fontFamily: 'var(--font-chakra-petch)'
+        }
+      }} />
 
-        {/* Dashboard Overview */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8'>
-          <div
-            className='bg-gradient-to-br from-blue-600 to-blue-700 p-6 rounded-xl shadow-lg'
-          >
-            <div className='flex items-center justify-between'>
+      {/* Navbar */}
+      <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center gap-4">
+              <Shield className="w-8 h-8 text-red-600" />
               <div>
-                <p className='text-blue-100 text-sm font-medium'>Total Members</p>
-                <p className='text-white text-3xl font-bold'>{members.length}</p>
-              </div>
-              <div className='bg-blue-500/20 p-3 rounded-full'>
-                <svg className='w-8 h-8 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z' />
-                </svg>
+                <h1 className="text-xl font-bold tracking-widest" style={{ fontFamily: 'var(--font-asylum)' }}>
+                  {translations.adminPanel}
+                </h1>
+                <p className="text-[10px] text-neutral-500 tracking-[0.2em]">SYSTEM V.2.0</p>
               </div>
             </div>
-          </div>
-
-          <div
-            className='bg-gradient-to-br from-yellow-600 to-yellow-700 p-6 rounded-xl shadow-lg'
-          >
-            <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-yellow-100 text-sm font-medium'>Leaders</p>
-                <p className='text-white text-3xl font-bold'>{members.filter(m => m.role !== 'Member').length}</p>
-              </div>
-              <div className='bg-yellow-500/20 p-3 rounded-full'>
-                <svg className='w-8 h-8 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className='bg-gradient-to-br from-green-600 to-green-700 p-6 rounded-xl shadow-lg'
-          >
-            <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-green-100 text-sm font-medium'>Regular Members</p>
-                <p className='text-white text-3xl font-bold'>{members.filter(m => m.role === 'Member').length}</p>
-              </div>
-              <div className='bg-green-500/20 p-3 rounded-full'>
-                <svg className='w-8 h-8 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z' />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className='bg-gradient-to-br from-purple-600 to-purple-700 p-6 rounded-xl shadow-lg'
-          >
-            <div className='flex items-center justify-between'>
-              <div>
-                <p className='text-purple-100 text-sm font-medium'>With Social Links</p>
-                <p className='text-white text-3xl font-bold'>{members.filter(m => m.sociallinks && Object.values(m.sociallinks).some(link => link && link.trim() !== '')).length}</p>
-              </div>
-              <div className='bg-purple-500/20 p-3 rounded-full'>
-                <svg className='w-8 h-8 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1' />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className='bg-gradient-to-br from-gray-800 to-gray-850 p-8 rounded-2xl shadow-2xl border border-gray-700 mb-8'
-        >
-          <div className='flex justify-between items-center mb-6'>
-            <div>
-              <h2 className='text-2xl text-white font-bold'>
-                {editing ? `${translations.editMember} ${editing.firstname} ${editing.lastname || 'JAGUARX'}` : translations.addNewMember}
-              </h2>
-              <p className='text-gray-400 text-sm mt-1'>
-                {editing ? 'Update member information and settings' : 'Add a new member to the gang'}
-              </p>
-            </div>
-            {editing && (
-              <button
-                type='button'
-                onClick={() => {
-                  setEditing(null)
-                  setForm({ memberType: 'member' })
-                  setImageFile(null)
-                }}
-                className='text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-700'
-                title='Cancel editing'
-              >
-                <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-                </svg>
-              </button>
-            )}
-          </div>
-
-          {/* Basic Information Section */}
-          <div className='mb-8'>
-            <h3 className='text-lg text-white font-semibold mb-4 flex items-center gap-2'>
-              <svg className='w-5 h-5 text-blue-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' />
-              </svg>
-              Basic Information
-            </h3>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
-              <div>
-                <label className='block text-sm font-medium text-gray-300 mb-2'>
-                  {translations.firstName} *
-                </label>
-                <input
-                  type='text'
-                  placeholder={translations.firstName}
-                  value={form.firstname || ''}
-                  onChange={(e) => setForm({ ...form, firstname: e.target.value })}
-                  className='w-full p-3 bg-gray-700/50 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
-                  required
-                />
-              </div>
-              <div>
-                <label className='block text-sm font-medium text-gray-300 mb-2'>
-                  {translations.lastName}
-                </label>
-                <input
-                  type='text'
-                  placeholder={translations.lastName}
-                  value={form.lastname || ''}
-                  onChange={(e) => setForm({ ...form, lastname: e.target.value })}
-                  className='w-full p-3 bg-gray-700/50 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Role & Priority Section */}
-          <div className='mb-8'>
-            <h3 className='text-lg text-white font-semibold mb-4 flex items-center gap-2'>
-              <svg className='w-5 h-5 text-yellow-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' />
-              </svg>
-              Role & Priority
-            </h3>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
-              <div>
-                <label className='block text-sm font-medium text-gray-300 mb-2'>
-                  {translations.role}
-                </label>
-                <select
-                  value={form.memberType || 'member'}
-                  onChange={(e) => setForm({ ...form, memberType: e.target.value })}
-                  className='w-full p-3 bg-gray-700/50 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
-                >
-                  <option value="member">{translations.memberOption}</option>
-                  <option value="leader">{translations.leaderOption}</option>
-                </select>
-              </div>
-              <div>
-                <label className='block text-sm font-medium text-gray-300 mb-2'>
-                  Priority (1 = highest)
-                </label>
-                <input
-                  type='number'
-                  placeholder='Priority (leave empty for normal)'
-                  value={form.priority || ''}
-                  onChange={(e) => setForm({ ...form, priority: e.target.value ? parseInt(e.target.value) : undefined })}
-                  className='w-full p-3 bg-gray-700/50 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
-                  min="1"
-                />
-                <p className='text-xs text-gray-500 mt-1'>Higher priority members appear first in listings</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Social Links Section */}
-          <div className='mb-8'>
-            <h3 className='text-lg text-white font-semibold mb-4 flex items-center gap-2'>
-              <svg className='w-5 h-5 text-purple-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1' />
-              </svg>
-              Social Links
-            </h3>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
-              <div>
-                <label className='block text-sm font-medium text-gray-300 mb-2'>
-                  {translations.facebookUrl}
-                </label>
-                <input
-                  type='url'
-                  placeholder='https://facebook.com/username'
-                  value={form.sociallinks?.facebook || ''}
-                  onChange={(e) => setForm({
-                    ...form,
-                    sociallinks: {
-                      ...form.sociallinks,
-                      facebook: e.target.value
-                    }
-                  })}
-                  className='w-full p-3 bg-gray-700/50 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Profile Image Section */}
-          <div className='mb-8'>
-            <h3 className='text-lg text-white font-semibold mb-4 flex items-center gap-2'>
-              <svg className='w-5 h-5 text-green-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' />
-              </svg>
-              Profile Image
-            </h3>
-            <div className='space-y-4'>
-              <div className='flex items-center gap-4'>
-                <label className='flex-1'>
-                  <div className='relative'>
-                    <input
-                      type='file'
-                      accept='image/*'
-                      onChange={handleFileChange}
-                      className='absolute inset-0 w-full h-full opacity-0 cursor-pointer'
-                    />
-                    <div className='w-full p-4 bg-gray-700/50 border-2 border-dashed border-gray-600 rounded-xl hover:border-blue-500 transition-all duration-200 text-center'>
-                      <svg className='w-8 h-8 text-gray-400 mx-auto mb-2' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12' />
-                      </svg>
-                      <p className='text-gray-300 text-sm'>Click to upload or drag and drop</p>
-                      <p className='text-gray-500 text-xs mt-1'>PNG, JPG up to 5MB</p>
-                    </div>
-                  </div>
-                </label>
-                {imageFile && (
-                  <div className='flex items-center gap-2 text-green-400'>
-                    <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
-                    </svg>
-                    <span className='text-sm'>{imageFile.name}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <div className='flex justify-end gap-4'>
-            {editing && (
-              <button
-                type='button'
-                onClick={() => {
-                  setEditing(null)
-                  setForm({ memberType: 'member' })
-                  setImageFile(null)
-                }}
-                className='px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-all duration-200 font-medium'
-              >
-                {translations.cancel}
-              </button>
-            )}
             <button
-              type='submit'
-              disabled={uploading}
-              className='px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-105'
+              onClick={logout}
+              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-red-600/20 text-neutral-400 hover:text-red-500 border border-white/5 hover:border-red-600/50 transition-all duration-300 rounded-sm group"
             >
-              {uploading ? (
-                <div className='flex items-center gap-2'>
-                  <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
-                  {translations.uploading}
-                </div>
-              ) : (
-                editing ? translations.updateMember : translations.addMember
-              )}
+              <LogOut className="w-4 h-4" />
+              <span className="text-xs tracking-widest">{translations.logout}</span>
             </button>
           </div>
-        </form>
+        </div>
+      </nav>
 
-        <div className='bg-gray-800 p-6 rounded-lg'>
-          <div className='flex justify-between items-center mb-6'>
-            <h2 className='text-xl text-white'>{translations.membersManagement}</h2>
-            <div className='text-gray-400 text-sm'>
-              {translations.total}: {members.length} | {translations.leaders}: {members.filter(m => m.role !== 'Member').length} | {translations.showing}: {filteredMembers.length}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {[
+            { label: translations.total, value: members.length, icon: Users, color: 'text-white' },
+            { label: translations.leaders, value: members.filter(m => m.role !== 'Member').length, icon: Star, color: 'text-yellow-500' },
+            { label: 'REGULAR', value: members.filter(m => m.role === 'Member').length, icon: UserPlus, color: 'text-neutral-400' },
+            { label: 'CONNECTED', value: members.filter(m => m.sociallinks && Object.values(m.sociallinks).some(link => link && link.trim() !== '')).length, icon: Globe, color: 'text-blue-500' }
+          ].map((stat, index) => (
+            <div key={index} className="bg-neutral-900/50 border border-white/5 p-6 relative group hover:border-white/20 transition-colors">
+              <div className="absolute top-0 right-0 w-2 h-2 bg-white/10 group-hover:bg-red-600 transition-colors"></div>
+              <div className="flex justify-between items-start mb-4">
+                <div className={`p-3 bg-white/5 rounded-sm ${stat.color}`}>
+                  <stat.icon className="w-6 h-6" />
+                </div>
+                <span className="text-4xl font-bold font-asylum text-white/20 group-hover:text-white/40 transition-colors">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <h3 className="text-3xl font-bold text-white mb-1">{stat.value}</h3>
+              <p className="text-xs text-neutral-500 tracking-widest uppercase">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-8">
+
+          {/* Form Section */}
+          <div className="lg:col-span-1">
+            <div className="bg-neutral-900/80 border border-white/10 p-6 sticky top-24"
+              style={{ clipPath: 'polygon(0 0, 100% 0, 100% 95%, 90% 100%, 0 100%)' }}>
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+                <h2 className="text-lg font-bold tracking-widest flex items-center gap-2">
+                  <Edit className="w-4 h-4 text-red-600" />
+                  {editing ? translations.editMember : translations.addNewMember}
+                </h2>
+                {editing && (
+                  <button onClick={() => {
+                    setEditing(null)
+                    setForm({ memberType: 'member' })
+                    setImageFile(null)
+                  }} className="text-xs text-red-500 hover:text-red-400 tracking-widest">
+                    {translations.cancel}
+                  </button>
+                )}
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Image Upload */}
+                <div className="relative group cursor-pointer">
+                  <input
+                    type='file'
+                    accept='image/*'
+                    onChange={handleFileChange}
+                    className='absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20'
+                  />
+                  <div className={`w-full aspect-video bg-black/50 border-2 border-dashed ${imageFile ? 'border-green-500/50' : 'border-white/10'} flex flex-col items-center justify-center group-hover:border-white/30 transition-colors`}>
+                    {imageFile ? (
+                      <div className="text-center">
+                        <Check className="w-8 h-8 text-green-500 mx-auto mb-2" />
+                        <span className="text-xs text-green-500 tracking-widest">{imageFile.name}</span>
+                      </div>
+                    ) : (
+                      <div className="text-center text-neutral-500">
+                        <Upload className="w-8 h-8 mx-auto mb-2" />
+                        <span className="text-xs tracking-widest">UPLOAD IMAGE</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-[10px] text-neutral-500 tracking-widest mb-1 block">{translations.firstName}</label>
+                    <input
+                      type="text"
+                      value={form.firstname || ''}
+                      onChange={(e) => setForm({ ...form, firstname: e.target.value })}
+                      className="w-full bg-black/50 border border-white/10 p-3 text-sm focus:border-red-600 focus:outline-none transition-colors"
+                      placeholder="ENTER NAME"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-neutral-500 tracking-widest mb-1 block">{translations.lastName}</label>
+                    <input
+                      type="text"
+                      value={form.lastname || ''}
+                      onChange={(e) => setForm({ ...form, lastname: e.target.value })}
+                      className="w-full bg-black/50 border border-white/10 p-3 text-sm focus:border-red-600 focus:outline-none transition-colors"
+                      placeholder="ENTER SURNAME"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] text-neutral-500 tracking-widest mb-1 block">{translations.role}</label>
+                    <select
+                      value={form.memberType || 'member'}
+                      onChange={(e) => setForm({ ...form, memberType: e.target.value })}
+                      className="w-full bg-black/50 border border-white/10 p-3 text-sm focus:border-red-600 focus:outline-none transition-colors appearance-none"
+                    >
+                      <option value="member">{translations.memberOption}</option>
+                      <option value="leader">{translations.leaderOption}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-neutral-500 tracking-widest mb-1 block">PRIORITY</label>
+                    <input
+                      type="number"
+                      value={form.priority || ''}
+                      onChange={(e) => setForm({ ...form, priority: e.target.value ? parseInt(e.target.value) : undefined })}
+                      className="w-full bg-black/50 border border-white/10 p-3 text-sm focus:border-red-600 focus:outline-none transition-colors"
+                      placeholder="0"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[10px] text-neutral-500 tracking-widest mb-1 block">{translations.facebookUrl}</label>
+                  <div className="relative">
+                    <Facebook className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                    <input
+                      type="url"
+                      value={form.sociallinks?.facebook || ''}
+                      onChange={(e) => setForm({ ...form, sociallinks: { ...form.sociallinks, facebook: e.target.value } })}
+                      className="w-full bg-black/50 border border-white/10 p-3 pl-10 text-sm focus:border-red-600 focus:outline-none transition-colors"
+                      placeholder="HTTPS://"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={uploading}
+                  className="w-full bg-white text-black font-bold py-3 hover:bg-red-600 hover:text-white transition-colors tracking-widest disabled:opacity-50"
+                  style={{ clipPath: 'polygon(0 0, 100% 0, 100% 80%, 95% 100%, 0 100%)' }}
+                >
+                  {uploading ? translations.uploading : (editing ? translations.updateMember : translations.addMember)}
+                </button>
+              </form>
             </div>
           </div>
 
-          {/* Enhanced Search and Filter Controls */}
-          <div
-            className='bg-gradient-to-r from-gray-750 to-gray-700 p-6 rounded-2xl border border-gray-600 mb-6 shadow-lg'
-          >
-            <div className='flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between'>
-              <div className='flex-1 max-w-md w-full lg:w-auto'>
-                <div className='relative'>
-                  <svg className='absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
-                  </svg>
-                  <input
-                    type='text'
-                    placeholder={translations.searchByName}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className='w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 placeholder-gray-400'
-                  />
-                </div>
+          {/* List Section */}
+          <div className="lg:col-span-2 space-y-6">
+
+            {/* Filters */}
+            <div className="bg-neutral-900/50 border border-white/10 p-4 flex flex-wrap gap-4 items-center justify-between">
+              <div className="relative flex-1 min-w-[200px]">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                <input
+                  type="text"
+                  placeholder={translations.searchByName}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-black/50 border border-white/10 py-2 pl-10 pr-4 text-sm focus:border-red-600 focus:outline-none transition-colors"
+                />
               </div>
 
-              <div className='flex flex-wrap gap-3 items-center w-full lg:w-auto'>
-                {/* Role Filter */}
-                <div className='flex items-center gap-2 min-w-0'>
-                  <label className='text-sm text-gray-300 font-medium hidden sm:inline'>Role:</label>
-                  <select
-                    value={showLeadersOnly ? 'leaders' : 'all'}
-                    onChange={(e) => setShowLeadersOnly(e.target.value === 'leaders')}
-                    className='px-3 py-2 bg-gray-800/50 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm'
-                  >
-                    <option value="all">All Members</option>
-                    <option value="leaders">Leaders Only</option>
-                  </select>
-                </div>
-
-                {/* Priority Filter */}
-                <div className='flex items-center gap-2 min-w-0'>
-                  <label className='text-sm text-gray-300 font-medium hidden sm:inline'>Priority:</label>
-                  <select
-                    value={priorityFilter}
-                    onChange={(e) => setPriorityFilter(e.target.value as 'all' | 'priority' | 'no-priority')}
-                    className='px-3 py-2 bg-gray-800/50 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm'
-                  >
-                    <option value="all">All</option>
-                    <option value="priority">Priority Only</option>
-                    <option value="no-priority">No Priority</option>
-                  </select>
-                </div>
-
-                {/* Social Links Filter */}
-                <div className='flex items-center gap-2 min-w-0'>
-                  <label className='text-sm text-gray-300 font-medium hidden sm:inline'>Social:</label>
-                  <select
-                    value={socialFilter}
-                    onChange={(e) => setSocialFilter(e.target.value as 'all' | 'with-social' | 'no-social')}
-                    className='px-3 py-2 bg-gray-800/50 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm'
-                  >
-                    <option value="all">All</option>
-                    <option value="with-social">With Links</option>
-                    <option value="no-social">No Links</option>
-                  </select>
-                </div>
-
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowLeadersOnly(!showLeadersOnly)}
+                  className={`px-3 py-2 text-xs tracking-widest border ${showLeadersOnly ? 'bg-red-600/20 border-red-600 text-red-500' : 'border-white/10 text-neutral-400 hover:border-white/30'}`}
+                >
+                  LEADERS
+                </button>
                 {selectedMembers.length > 0 && (
                   <button
                     onClick={handleBulkDelete}
-                    className='px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2'
+                    className="px-3 py-2 text-xs tracking-widest bg-red-600 text-white hover:bg-red-700 transition-colors"
                   >
-                    <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16' />
-                    </svg>
-                    {translations.deleteSelected} ({selectedMembers.length})
+                    DELETE ({selectedMembers.length})
                   </button>
                 )}
               </div>
             </div>
 
-            {/* Active Filters Display */}
-            {(searchTerm || showLeadersOnly || priorityFilter !== 'all' || socialFilter !== 'all') && (
-              <div
-                className='flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-600'
-              >
-                <span className='text-sm text-gray-400'>Active filters:</span>
-                {searchTerm && (
-                  <span className='inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs'>
-                    Search: &quot;{searchTerm}&quot;
-                    <button onClick={() => setSearchTerm('')} className='hover:text-blue-200'>×</button>
-                  </span>
-                )}
-                {showLeadersOnly && (
-                  <span className='inline-flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded-full text-xs'>
-                    Leaders Only
-                    <button onClick={() => setShowLeadersOnly(false)} className='hover:text-yellow-200'>×</button>
-                  </span>
-                )}
-                {priorityFilter !== 'all' && (
-                  <span className='inline-flex items-center gap-1 px-2 py-1 bg-red-500/20 text-red-300 rounded-full text-xs'>
-                    {priorityFilter === 'priority' ? 'Priority Only' : 'No Priority'}
-                    <button onClick={() => setPriorityFilter('all')} className='hover:text-red-200'>×</button>
-                  </span>
-                )}
-                {socialFilter !== 'all' && (
-                  <span className='inline-flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs'>
-                    {socialFilter === 'with-social' ? 'With Social Links' : 'No Social Links'}
-                    <button onClick={() => setSocialFilter('all')} className='hover:text-purple-200'>×</button>
-                  </span>
-                )}
+            {/* Table Header */}
+            <div className="grid grid-cols-12 gap-4 px-4 py-2 text-[10px] text-neutral-500 tracking-widest uppercase border-b border-white/10">
+              <div className="col-span-1 flex items-center">
+                <input type="checkbox" checked={selectAll} onChange={handleSelectAll} className="accent-red-600" />
               </div>
-            )}
-          </div>
+              <div className="col-span-5">Member</div>
+              <div className="col-span-3">Role</div>
+              <div className="col-span-3 text-right">Actions</div>
+            </div>
 
-          {/* Members List */}
-          <div className='space-y-2'>
-            {/* Select All Header */}
-            {currentMembers.length > 0 && (
-              <div
-                className='flex items-center justify-between bg-gradient-to-r from-gray-750 to-gray-700 p-4 rounded-xl border border-gray-600 shadow-lg'
-              >
-                <div className='flex items-center space-x-3'>
-                  <input
-                    type='checkbox'
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                    className='w-5 h-5 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500'
-                  />
-                  <span className='text-white font-medium text-sm'>{translations.selectAll} ({currentMembers.length})</span>
-                </div>
-                <div className='text-gray-400 text-sm'>
-                  {translations.pageOf} {currentPage} {translations.of} {totalPages}
-                </div>
-              </div>
-            )}
-
-            {currentMembers.map((member) => (
-              <div
-                key={member.id}
-                className='bg-gray-700/50 backdrop-blur-sm border border-gray-600 rounded-xl p-4 hover:bg-gray-650 hover:border-gray-500 transition-all duration-200 group'
-              >
-                <div className='flex flex-col sm:flex-row items-start justify-between'>
-                  <div className='flex items-start space-x-4 flex-1 w-full sm:w-auto'>
-                    <div className='relative flex-shrink-0'>
+            {/* List Items */}
+            <div className="space-y-2">
+              {currentMembers.length > 0 ? (
+                currentMembers.map((member) => (
+                  <motion.div
+                    key={member.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`grid grid-cols-12 gap-4 items-center p-4 bg-neutral-900/30 border ${selectedMembers.includes(member.id) ? 'border-red-600/50 bg-red-600/5' : 'border-white/5 hover:border-white/20'} transition-all duration-200 group`}
+                  >
+                    <div className="col-span-1">
                       <input
-                        type='checkbox'
+                        type="checkbox"
                         checked={selectedMembers.includes(member.id)}
                         onChange={() => handleSelectMember(member.id)}
-                        className='absolute -top-2 -left-2 w-4 h-4 text-blue-600 bg-gray-600 border-gray-500 rounded focus:ring-blue-500 z-10'
+                        className="accent-red-600"
                       />
-                      {member.imageurl ? (
-                        <img
-                          src={member.imageurl}
-                          alt={`${member.firstname} ${member.lastname || 'JAGUARX'}`}
-                          className='w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover ring-2 ring-gray-600 group-hover:ring-blue-500 transition-all duration-200'
-                        />
-                      ) : (
-                        <div className='w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center ring-2 ring-gray-600 group-hover:ring-blue-500 transition-all duration-200'>
-                          <svg className='w-8 h-8 sm:w-10 sm:h-10 text-gray-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' />
-                          </svg>
-                        </div>
-                      )}
                     </div>
-
-                    <div className='flex-1 min-w-0'>
-                      <div className='flex flex-col sm:flex-row sm:items-center gap-2 mb-2'>
-                        <h3 className='text-white font-semibold text-lg truncate'>
-                          {member.firstname} {member.lastname || 'JAGUARX'}
-                        </h3>
-                        {member.priority && (
-                          <span className='bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded-full border border-red-500/30 self-start sm:self-auto'>
-                            P{member.priority}
-                          </span>
+                    <div className="col-span-5 flex items-center gap-3">
+                      <div className="w-10 h-10 bg-black border border-white/10 overflow-hidden">
+                        {member.imageurl ? (
+                          <img src={member.imageurl} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-neutral-700">
+                            <Users className="w-4 h-4" />
+                          </div>
                         )}
                       </div>
-
-                      <div className='flex flex-wrap items-center gap-2 mb-3'>
-                        {member.role === 'Founder' && (
-                          <span className='bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-medium shadow-lg'>
-                            👑 Founder
-                          </span>
-                        )}
-                        {member.role === 'Leader' && (
-                          <span className='bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium shadow-lg'>
-                            ⭐ Leader
-                          </span>
-                        )}
-                        {member.role === 'Member' && (
-                          <span className='bg-gray-600 text-gray-300 text-xs px-3 py-1 rounded-full font-medium'>
-                            👤 Member
-                          </span>
-                        )}
-                        {member.role && member.role !== 'Founder' && member.role !== 'Leader' && member.role !== 'Member' && (
-                          <span className='bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-medium'>
-                            {member.role}
-                          </span>
+                      <div>
+                        <p className="text-sm font-bold text-white">{member.firstname} {member.lastname}</p>
+                        {member.priority && member.priority > 0 && (
+                          <span className="text-[10px] text-yellow-500 tracking-widest">PRIORITY {member.priority}</span>
                         )}
                       </div>
-
-                      {member.sociallinks && Object.keys(member.sociallinks).length > 0 && (
-                        <div className='flex items-center gap-2'>
-                          {member.sociallinks.facebook && (
-                            <a
-                              href={member.sociallinks.facebook}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                              className='text-blue-400 hover:text-blue-300 transition-colors'
-                              title='Facebook'
-                            >
-                              <svg className='w-4 h-4' fill='currentColor' viewBox='0 0 24 24'>
-                                <path d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' />
-                              </svg>
-                            </a>
-                          )}
-                        </div>
-                      )}
                     </div>
-                  </div>
-
-                  <div className='flex items-center gap-2 mt-4 sm:mt-0 sm:ml-4 flex-shrink-0'>
-                    <button
-                      onClick={() => {
-                        setEditing(member)
-                        setForm({ ...member, memberType: member.role === 'Leader' ? 'leader' : 'member' })
-                        setImageFile(null)
-                        window.scrollTo({ top: 0, behavior: 'smooth' })
-                      }}
-                      className='bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg flex-1 sm:flex-none'
-                      title='Edit member'
-                    >
-                      <svg className='w-4 h-4 mx-auto' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => handleDelete(member.id)}
-                      className='bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition-all duration-200 hover:scale-105 shadow-lg flex-1 sm:flex-none'
-                      title='Delete member'
-                    >
-                      <svg className='w-4 h-4 mx-auto' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16' />
-                      </svg>
-                    </button>
-                  </div>
+                    <div className="col-span-3">
+                      <span className={`text-xs tracking-widest px-2 py-1 border ${member.role !== 'Member' ? 'border-red-600 text-red-500' : 'border-neutral-700 text-neutral-500'}`}>
+                        {member.role === 'Member' ? 'MEMBER' : 'LEADER'}
+                      </span>
+                    </div>
+                    <div className="col-span-3 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => {
+                          setEditing(member)
+                          setForm({
+                            firstname: member.firstname,
+                            lastname: member.lastname,
+                            imageurl: member.imageurl,
+                            memberType: member.role === 'Leader' ? 'leader' : 'member',
+                            sociallinks: member.sociallinks,
+                            priority: member.priority
+                          })
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}
+                        className="p-2 hover:bg-white/10 text-neutral-400 hover:text-white transition-colors"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(member.id)}
+                        className="p-2 hover:bg-red-600/20 text-neutral-400 hover:text-red-500 transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="text-center py-12 text-neutral-500 tracking-widest">
+                  {translations.noMembersMatch}
                 </div>
+              )}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center gap-2 mt-8">
+                <button
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 border border-white/10 disabled:opacity-30 hover:bg-white/5 transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <span className="px-4 py-2 text-sm tracking-widest text-neutral-500">
+                  PAGE {currentPage} / {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 border border-white/10 disabled:opacity-30 hover:bg-white/5 transition-colors"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
-            ))}
+            )}
           </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className='flex justify-center items-center space-x-2 mt-6'>
-              <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className='bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
-              >
-                {translations.previous}
-              </button>
-
-              <div className='flex space-x-1'>
-                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                  const pageNum = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i
-                  if (pageNum > totalPages) return null
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`px-3 py-1 rounded ${currentPage === pageNum
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-600 text-white hover:bg-gray-700'
-                        }`}
-                    >
-                      {pageNum}
-                    </button>
-                  )
-                })}
-              </div>
-
-              <button
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-                className='bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed'
-              >
-                {translations.next}
-              </button>
-            </div>
-          )}
-
-          {filteredMembers.length === 0 && (
-            <div className='text-center text-gray-400 py-8'>
-              {searchTerm || showLeadersOnly ? translations.noMembersMatch : translations.noMembersFound}
-            </div>
-          )}
         </div>
-      </div>
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#1f2937',
-            color: '#fff',
-            border: '1px solid #374151',
-          },
-        }}
-      />
+      </main>
     </div>
   )
 }

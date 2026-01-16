@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Volume2, VolumeX, Play, Pause, X, Music2 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 
 interface AutoPlayMusicProps {
   src: string
@@ -19,6 +20,7 @@ export default function AutoPlayMusic({
   title = 'Come Through',
   artist = 'The Weeknd'
 }: AutoPlayMusicProps) {
+  const pathname = usePathname()
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentVolume, setCurrentVolume] = useState(volume)
@@ -29,6 +31,9 @@ export default function AutoPlayMusic({
 
   // Get YouTube thumbnail
   const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`
+
+  // Don't render on admin page
+  if (pathname?.startsWith('/admin')) return null
 
   useEffect(() => {
     // Ensure we're in a browser environment
