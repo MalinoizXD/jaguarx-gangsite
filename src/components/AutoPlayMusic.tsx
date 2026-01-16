@@ -282,7 +282,7 @@ export default function AutoPlayMusic({
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2 }}
               onClick={() => setIsExpanded(true)}
-              className="bg-neutral-900/90 backdrop-blur-md border border-white/10 p-2 cursor-pointer hover:border-white/30 transition-colors group w-64"
+              className="bg-neutral-900/90 backdrop-blur-md border border-white/10 p-2 cursor-pointer hover:border-white/30 transition-colors group w-auto md:w-64"
               style={{ clipPath: 'polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 20%)' }}
             >
               <div className="flex items-center gap-3">
@@ -307,7 +307,7 @@ export default function AutoPlayMusic({
                 </div>
 
                 {/* Song Info - Compact */}
-                <div className="flex-1 min-w-0 pr-2">
+                <div className="hidden md:block flex-1 min-w-0 pr-2">
                   <p className="text-white text-xs font-bold uppercase tracking-wider truncate" style={{ fontFamily: 'var(--font-asylum)' }}>{title}</p>
                   <p className="text-neutral-500 text-[10px] uppercase tracking-widest truncate">{artist}</p>
                 </div>
@@ -318,7 +318,7 @@ export default function AutoPlayMusic({
                     e.stopPropagation()
                     togglePlayPause()
                   }}
-                  className="w-8 h-8 bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors flex-shrink-0 border border-white/10"
+                  className="hidden md:flex w-8 h-8 bg-white/5 hover:bg-white/10 items-center justify-center transition-colors flex-shrink-0 border border-white/10"
                 >
                   {isPlaying ? (
                     <Pause className="w-3 h-3 text-white" />
